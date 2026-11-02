@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder | Haari Codes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🍳 Recipe Finder</h1>
+        <p>Discover delicious recipes with what you have!</p>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <h2>Find Your Recipe</h2>
+
+            <input type="text" id="searchInput"
+                placeholder="Search recipe name...">
+
+            <input type="text" id="ingredientInput"
+                placeholder="Enter ingredients (e.g. egg, tomato)">
+
+            <button id="searchBtn">Search Recipes</button>
+        </section>
+
+        <section class="categories">
+            <h2>Explore Categories</h2>
+            <button>All</button>
+            <button>Breakfast</button>
+            <button>Lunch</button>
+            <button>Dinner</button>
+            <button>Snacks</button>
+        </section>
+
+        <section class="recipes">
+            <h2>Popular Recipes</h2>
+            <div id="recipeContainer"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with ❤️ by Haari_Codes</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
