@@ -9,37 +9,86 @@
 </head>
 <body>
 
-    <header>
-        <h1>🍳 Recipe Finder</h1>
-        <p>Discover delicious recipes with what you have!</p>
+    <header class="header">
+        <h1>🍃 Recipe Finder</h1>
+        <select id="languageSelect" aria-label="Choose language">
+            <option value="en">English</option>
+            <option value="ml">മലയാളം</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ta">தமிழ்</option>
+        </select>
     </header>
 
     <main>
         <section class="search-section">
-            <h2>Find Your Recipe</h2>
+            <h2>Discover Your Next Favourite Meal</h2>
+            <p>What would you love to eat today?</p>
 
-            <input type="text" id="searchInput"
-                placeholder="Search recipe name...">
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search food... e.g. Biriyani, Pizza"
+                >
+                <button id="searchBtn">Search</button>
+            </div>
 
-            <input type="text" id="ingredientInput"
-                placeholder="Enter ingredients (e.g. egg, tomato)">
-
-            <button id="searchBtn">Search Recipes</button>
+            <button id="exploreToggle" class="link-button" type="button">
+                Don't know what to cook? Explore recipes ↓
+            </button>
         </section>
 
-        <section class="categories">
-            <h2>Explore Categories</h2>
-            <button>All</button>
-            <button>Breakfast</button>
-            <button>Lunch</button>
-            <button>Dinner</button>
-            <button>Snacks</button>
+        <section id="filterSection" class="filter-section" hidden>
+            <h2>Explore Recipes</h2>
+
+            <label for="foodType">Food Type</label>
+            <select id="foodType">
+                <option value="">Any</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Chicken">Chicken</option>
+                <option value="Beef">Beef</option>
+                <option value="Paneer">Paneer</option>
+                <option value="Seafood">Seafood</option>
+            </select>
+
+            <label for="flavour">Flavour</label>
+            <select id="flavour">
+                <option value="">Any</option>
+                <option value="Sweet">Sweet</option>
+                <option value="Spicy">Spicy</option>
+                <option value="Crispy">Crispy</option>
+                <option value="Sour">Sour</option>
+            </select>
+
+            <label for="mealTime">Meal Time</label>
+            <select id="mealTime">
+                <option value="">Any</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snacks">Snacks</option>
+            </select>
+
+            <label for="foodCategory">Food Category</label>
+            <select id="foodCategory">
+                <option value="">Any</option>
+                <option value="Juices">Juices</option>
+                <option value="Dessert">Desserts</option>
+                <option value="Biriyani">Biriyani</option>
+                <option value="Curry">Curry</option>
+                <option value="Pasta">Pasta</option>
+                <option value="Seafood">Seafood</option>
+            </select>
+
+            <button id="filterSubmit">Submit</button>
         </section>
 
         <section class="recipes">
-            <h2>Popular Recipes</h2>
-            <div id="recipeContainer"></div>
+            <h2 id="resultsHeading">Recipes</h2>
+            <div id="recipeContainer" class="recipe-grid"></div>
         </section>
+
+        <section id="recipeDetails" hidden></section>
     </main>
 
     <footer>
@@ -49,3 +98,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
