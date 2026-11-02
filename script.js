@@ -1,132 +1,145 @@
-
-const recipes = [
-    {
-        name: "Egg Omelette",
-        category: "Breakfast",
-        ingredients: ["egg", "onion", "salt"],
-        time: "10 minutes",
-        description: "A simple and tasty egg omelette."
-    },
-    {
-        name: "Tomato Rice",
-        category: "Lunch",
-        ingredients: ["rice", "tomato", "onion"],
-        time: "25 minutes",
-        description: "Delicious homemade tomato rice."
-    },
-    {
-        name: "Banana Pancakes",
-        category: "Breakfast",
-        ingredients: ["banana", "egg", "milk"],
-        time: "15 minutes",
-        description: "Soft and sweet banana pancakes."
-    },
-    {
-        name: "Vegetable Sandwich",
-        category: "Snacks",
-        ingredients: ["bread", "tomato", "onion"],
-        time: "10 minutes",
-        description: "A crunchy and healthy sandwich."
-    },
-    {
-        name: "Chicken Curry",
-        category: "Dinner",
-        ingredients: ["chicken", "onion", "tomato"],
-        time: "40 minutes",
-        description: "A flavourful homemade chicken curry."
-    }
-];
+const API = "https://www.themealdb.com/api/json/v1/1";
 
 const container = document.getElementById("recipeContainer");
 const searchInput = document.getElementById("searchInput");
 const ingredientInput = document.getElementById("ingredientInput");
 const searchBtn = document.getElementById("searchBtn");
 
-let selectedCategory = "All";
+let meals = [];
+let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
-let favorites = JSON.parse(
-    localStorage.getItem("favorites") || "[]"
-);
+async function getMeals(url) {
+    container.innerHTML = "<p>Finding delicious recipes... 🍳</p>";
 
-function displayRecipes(list) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.meals || [];
+    } catch (error) {
+        container.innerHTML = "<p>Something went wrong. Please try again!</p>";
+        return [];
+    }
+}
+
+function getIngredients(meal) {
+    let ingredients = [];
+
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+
+        if (ingredient && ingredient.trim()) {
+            ingredients.push(`${measure || ""} ${ingredient}`.trim());
+        }
+    }
+
+    return ingredients;
+}
+
+function displayMeals(list) {
+    meals = list;
     container.innerHTML = "";
 
-    if (list.length === 0) {
-        container.innerHTML = "<p>No recipes found!</p>";
+    if (!list.length) {
+        container.innerHTML = "<p>No recipes found. Try another food! 🍽️</p>";
         return;
     }
 
-    list.forEach(recipe => {
-        const isFavorite = favorites.includes(recipe.name);
-
+    list.forEach(meal => {
         const card = document.createElement("div");
         card.className = "recipe-card";
 
+        const saved = favorites.includes(meal.idMeal);
+
         card.innerHTML = `
-            <h3>${recipe.name}</h3>
-            <p>${recipe.description}</p>
-            <p>Category: ${recipe.category}</p>
-            <p>Cooking time: ${recipe.time}</p>
-            <p>Ingredients: ${recipe.ingredients.join(", ")}</p>
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            <h3>${meal.strMeal}</h3>
+            <p>${meal.strArea || "Various"} Cuisine</p>
+            <button class="details-btn">View Recipe</button>
             <button class="favorite-btn">
-                ${isFavorite ? "❤️ Saved" : "🤍 Favorite"}
+                ${saved ? "❤️ Saved" : "♡ Favorite"}
             </button>
+            <div class="recipe-details" style="display:none">
+                <h4>Ingredients</h4>
+                <ul>
+                    ${getIngredients(meal).map(item => `<li>${item}</li>`).join("")}
+                </ul>
+                <h4>Cooking Instructions</h4>
+                <p>${meal.strInstructions || "No instructions available."}</p>
+                ${meal.strYoutube ? `<a href="${meal.strYoutube}" target="_blank">Watch Video</a>` : ""}
+            </div>
         `;
 
-        card.querySelector(".favorite-btn").addEventListener(
-            "click", () => toggleFavorite(recipe.name)
-        );
+        card.querySelector(".details-btn").addEventListener("click", () => {
+            const details = card.querySelector(".recipe-details");
+            details.style.display =
+                details.style.display === "none" ? "block" : "none";
+        });
+
+        card.querySelector(".favorite-btn").addEventListener("click", () => {
+            toggleFavorite(meal.idMeal);
+        });
 
         container.appendChild(card);
     });
 }
 
-function toggleFavorite(name) {
-    if (favorites.includes(name)) {
-        favorites = favorites.filter(item => item !== name);
+function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(item => item !== id);
     } else {
-        favorites.push(name);
+        favorites.push(id);
     }
 
     localStorage.setItem("favorites", JSON.stringify(favorites));
-    searchRecipes();
+    displayMeals(meals);
 }
 
-function searchRecipes() {
-    const name = searchInput.value.toLowerCase().trim();
+async function searchRecipes() {
+    const name = searchInput?.value.trim() || "";
+    const ingredients = ingredientInput?.value.trim() || "";
 
-    const ingredients = ingredientInput.value
-        .toLowerCase()
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
+    if (name) {
+        const results = await getMeals(
+            `${API}/search.php?s=${encodeURIComponent(name)}`
+        );
+        displayMeals(results);
+        return;
+    }
 
-    const filtered = recipes.filter(recipe => {
-        const nameMatch = recipe.name.toLowerCase().includes(name);
+    if (ingredients) {
+        const firstIngredient = ingredients.split(",")[0].trim();
 
-        const categoryMatch =
-            selectedCategory === "All" ||
-            recipe.category === selectedCategory;
+        const results = await getMeals(
+            `${API}/filter.php?i=${encodeURIComponent(firstIngredient)}`
+        );
 
-        const ingredientMatch =
-            ingredients.length === 0 ||
-            ingredients.every(item =>
-                recipe.ingredients.includes(item)
-            );
+        const detailedMeals = await Promise.all(
+            results.slice(0, 12).map(async meal => {
+                const response = await fetch(
+                    `${API}/lookup.php?i=${meal.idMeal}`
+                );
+                const data = await response.json();
+                return data.meals ? data.meals[0] : null;
+            })
+        );
 
-        return nameMatch && categoryMatch && ingredientMatch;
-    });
+        displayMeals(detailedMeals.filter(Boolean));
+        return;
+    }
 
-    displayRecipes(filtered);
+    alert("Enter a food name or an ingredient!");
 }
 
-searchBtn.addEventListener("click", searchRecipes);
+searchBtn?.addEventListener("click", searchRecipes);
 
-document.querySelectorAll(".categories button").forEach(button => {
-    button.addEventListener("click", () => {
-        selectedCategory = button.textContent;
-        searchRecipes();
-    });
+searchInput?.addEventListener("keydown", event => {
+    if (event.key === "Enter") searchRecipes();
 });
 
-displayRecipes(recipes);
+ingredientInput?.addEventListener("keydown", event => {
+    if (event.key === "Enter") searchRecipes();
+});
+
+// Show recipes when the website opens
+getMeals(`${API}/search.php?s=chicken`).then(displayMeals);
