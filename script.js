@@ -140,6 +140,3 @@ searchInput?.addEventListener("keydown", event => {
 ingredientInput?.addEventListener("keydown", event => {
     if (event.key === "Enter") searchRecipes();
 });
-
-// Show recipes when the website opens
-getMeals(`${API}/search.php?s=chicken`).then(displayMeals);
