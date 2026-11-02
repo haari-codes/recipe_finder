@@ -1,0 +1,98 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #fffaf2;
+    color: #333;
+}
+
+header {
+    background: #e87532;
+    color: white;
+    text-align: center;
+    padding: 35px 15px;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+section {
+    margin-bottom: 35px;
+}
+
+h2 {
+    margin-bottom: 18px;
+    color: #a84920;
+}
+
+.search-section {
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button {
+    background: #e87532;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #bd5421;
+}
+
+.categories {
+    text-align: center;
+}
+
+.recipes {
+    padding: 10px;
+}
+
+#recipeContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    main {
+        padding: 20px 12px;
+    }
+}
