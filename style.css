@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -6,93 +8,188 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #fffaf2;
-    color: #333;
+    font-family: 'Poppins', sans-serif;
+    background: #fffaf3;
+    color: #26372d;
 }
 
 header {
-    background: #e87532;
-    color: white;
-    text-align: center;
-    padding: 35px 15px;
+    background: #fffaf3;
+    padding: 25px 7%;
+    text-align: left;
+    border-bottom: 1px solid #eee7dc;
 }
 
 header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 30px;
+    color: #e87532;
+    font-weight: 800;
+}
+
+header p {
+    color: #777;
+    margin-top: 7px;
 }
 
 main {
-    max-width: 1000px;
+    max-width: 1150px;
     margin: auto;
-    padding: 25px 15px;
+    padding: 45px 22px;
 }
 
 section {
-    margin-bottom: 35px;
-}
-
-h2 {
-    margin-bottom: 18px;
-    color: #a84920;
+    margin-bottom: 55px;
 }
 
 .search-section {
+    background: #f9ead8;
+    padding: 55px 30px;
+    border-radius: 25px;
     text-align: center;
 }
 
-input {
-    width: 100%;
-    padding: 14px;
+.search-section h2 {
+    font-size: 32px;
+    color: #26372d;
     margin-bottom: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
+}
+
+.search-section::after {
+    content: "Fresh ideas. Delicious moments.";
+    display: block;
+    color: #777;
+    margin-top: 15px;
+}
+
+input {
+    width: 85%;
+    max-width: 600px;
+    padding: 16px 20px;
+    margin: 12px auto;
+    display: block;
+    border: 1px solid #e7ded1;
+    border-radius: 30px;
+    outline: none;
+    font-size: 14px;
+    background: white;
+}
+
+input:focus {
+    border-color: #e87532;
+    box-shadow: 0 0 0 3px #e8753220;
 }
 
 button {
     background: #e87532;
     color: white;
     border: none;
-    padding: 12px 18px;
-    border-radius: 8px;
-    margin: 5px;
+    padding: 12px 23px;
+    border-radius: 25px;
+    margin: 6px;
+    font-family: inherit;
+    font-weight: 600;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #bd5421;
+    background: #bf5421;
+    transform: translateY(-2px);
 }
 
 .categories {
     text-align: center;
 }
 
-.recipes {
-    padding: 10px;
+h2 {
+    color: #26372d;
+    margin-bottom: 20px;
+}
+
+.categories button {
+    background: white;
+    color: #405344;
+    border: 1px solid #e6e1d8;
+}
+
+.categories button:hover,
+.categories button:focus {
+    background: #315c43;
+    color: white;
 }
 
 #recipeContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.recipe-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid #eee8df;
+    box-shadow: 0 5px 20px #26372d0b;
+    transition: 0.3s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px #26372d18;
+}
+
+.recipe-card h3 {
+    color: #315c43;
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.recipe-card p {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 7px;
+}
+
+.recipe-card button {
+    margin: 15px 0 0;
 }
 
 footer {
-    background: #333;
+    background: #26372d;
     color: white;
     text-align: center;
-    padding: 20px;
-    margin-top: 30px;
+    padding: 30px;
+    margin-top: 40px;
 }
 
 @media (max-width: 600px) {
+    header {
+        padding: 22px;
+    }
+
     header h1 {
         font-size: 25px;
     }
 
     main {
-        padding: 20px 12px;
+        padding: 25px 15px;
+    }
+
+    .search-section {
+        padding: 40px 15px;
+    }
+
+    .search-section h2 {
+        font-size: 24px;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    #recipeContainer {
+        grid-template-columns: 1fr;
     }
 }
+
