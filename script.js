@@ -8,7 +8,6 @@ const exploreToggle = document.getElementById("exploreToggle");
 const filterSection = document.getElementById("filterSection");
 const filterSubmit = document.getElementById("filterSubmit");
 const detailsSection = document.getElementById("recipeDetails");
-const languageSelect = document.getElementById("languageSelect");
 let meals = [];
 
 async function getMeals(url) {
